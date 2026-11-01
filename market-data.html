@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What zoning risk costs, in months and dollars — Market Data | zoningrisk.com</title>
+<meta name="description" content="Entitlement timelines, rezoning costs, and the regulatory share of a new home&#x27;s price, from builder surveys and published municipal schedules.">
+<link rel="canonical" href="https://zoningrisk.com/market-data">
+<meta property="og:title" content="What zoning risk costs, in months and dollars — Market Data | zoningrisk.com">
+<meta property="og:description" content="Entitlement timelines, rezoning costs, and the regulatory share of a new home's price, from builder surveys and published municipal schedules.">
+<meta property="og:url" content="https://zoningrisk.com/market-data">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --navy:#0a1628; --navy-2:#0e1e38; --paper:#faf8f5; --orange:#ff6b35;
+    --line:rgba(10,22,40,.14); --line-l:rgba(250,248,245,.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--navy);color:var(--paper);font-family:"Space Grotesk",sans-serif;
+       font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--orange);color:var(--navy)}
+  .display{font-family:"Archivo",sans-serif;font-stretch:125%;font-weight:900;
+           text-transform:uppercase;letter-spacing:-.015em;line-height:.98}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  a{color:inherit}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+  /* ---------- header ---------- */
+  header.site{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s}
+  header.site.scrolled{background:rgba(10,22,40,.88);backdrop-filter:blur(10px)}
+  .bar{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+  .brand{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.28em;text-transform:uppercase}
+  .brand b{color:var(--orange)}
+  .buy-mini{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    border:1px solid var(--line-l);padding:12px 22px;text-decoration:none;transition:.25s}
+  .buy-mini:hover{background:var(--orange);border-color:var(--orange);color:var(--navy)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+  .hero .shade{position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(10,22,40,.55) 0%,rgba(10,22,40,.35) 42%,rgba(10,22,40,.60) 100%)}
+  .hero .inner{position:relative;z-index:2;padding-bottom:56px}
+  .hero .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--orange);margin-bottom:26px;display:flex;align-items:center;gap:14px}
+  .hero .kicker::before{content:"";width:44px;height:2px;background:var(--orange)}
+  .hero h1{font-size:clamp(44px,7.4vw,116px);max-width:14ch}
+  .hero h1 .o{color:var(--orange)}
+  .hero-sub{max-width:640px;margin-top:26px;font-size:clamp(16px,1.6vw,19px);color:rgba(250,248,245,.86)}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:36px}
+  .btn-buy{display:inline-block;background:var(--orange);color:var(--navy);text-decoration:none;
+    font-family:"Archivo",sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;
+    letter-spacing:.02em;font-size:18px;padding:20px 44px;transition:transform .2s,box-shadow .2s}
+  .btn-buy:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(255,107,53,.35)}
+  .price-tag{font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.14em;color:rgba(250,248,245,.8)}
+  .price-tag strong{color:var(--paper);font-size:22px;letter-spacing:.02em}
+  .hero .domain-strip{position:relative;z-index:2;border-top:1px solid var(--line-l);padding:22px 0;
+    display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between;align-items:center;
+    font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.18em;text-transform:uppercase;
+    color:rgba(250,248,245,.72)}
+  .hero .domain-strip .dom{font-size:22px;letter-spacing:.06em;color:var(--paper);font-weight:600}
+
+  /* ---------- ticker ---------- */
+  .ticker{border-top:1px solid var(--line-l);border-bottom:1px solid var(--line-l);
+    background:var(--navy-2);overflow:hidden;white-space:nowrap;padding:16px 0}
+  .ticker .track{display:inline-block;animation:tick 30s linear infinite}
+  .ticker span{font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.3em;
+    text-transform:uppercase;color:rgba(250,248,245,.55);padding:0 34px}
+  .ticker span.hot{color:var(--orange)}
+  @keyframes tick{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
+
+  /* ---------- thesis ---------- */
+  .thesis{background:var(--paper);color:var(--navy);padding:clamp(90px,10vw,150px) 0 0}
+  .sec-label{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--orange);margin-bottom:28px;display:flex;align-items:center;gap:14px}
+  .sec-label::before{content:"";width:44px;height:2px;background:var(--orange)}
+  .thesis h2{font-size:clamp(34px,4.6vw,68px);max-width:16ch;margin-bottom:44px}
+  .thesis-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);padding-bottom:clamp(70px,7vw,110px)}
+  .thesis-grid p{font-size:17.5px;color:rgba(10,22,40,.82)}
+  .thesis-grid p+p{margin-top:22px}
+  .thesis-grid p strong{color:var(--navy)}
+  .lead{font-size:21px!important;color:var(--navy)!important;font-weight:500}
+  .fullbleed{position:relative;min-height:62vh;background:url("images/aerial-day.jpg") center/cover no-repeat fixed;
+    filter:saturate(.72) contrast(1.06)}
+  @media(max-width:900px){.fullbleed{background-attachment:scroll}}
+  .fullbleed .cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,rgba(10,22,40,.82),transparent);
+    padding:80px 0 26px;color:rgba(250,248,245,.85)}
+  .fullbleed .cap .mono{font-size:12px;letter-spacing:.28em;text-transform:uppercase}
+
+  /* ---------- numbers ---------- */
+  .numbers{background:var(--navy);padding:clamp(90px,10vw,150px) 0}
+  .numbers h2{font-size:clamp(34px,4.6vw,68px);margin-bottom:14px}
+  .numbers .note{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.12em;
+    color:rgba(250,248,245,.5);margin-bottom:56px}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-l);border:1px solid var(--line-l)}
+  .stat{background:var(--navy);padding:44px 36px}
+  .stat .n{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:clamp(30px,3.4vw,46px);
+    color:var(--orange);line-height:1.1}
+  .stat .d{margin-top:18px;font-size:16px;color:rgba(250,248,245,.82)}
+  .stat .s{margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:rgba(250,248,245,.45)}
+
+  /* ---------- buyers ---------- */
+  .buyers{background:var(--paper);color:var(--navy);padding:clamp(90px,10vw,150px) 0}
+  .buyers h2{font-size:clamp(34px,4.6vw,68px);margin-bottom:16px;max-width:14ch}
+  .buyers .sub{max-width:640px;color:rgba(10,22,40,.7);margin-bottom:60px;font-size:17.5px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .card{background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(10,22,40,.12)}
+  .card .ph{height:240px;overflow:hidden}
+  .card .ph img{width:100%;height:100%;object-fit:cover;filter:saturate(.72) contrast(1.06);transition:transform .6s}
+  .card:hover .ph img{transform:scale(1.05)}
+  .card .tx{padding:32px 30px 36px}
+  .card .zone{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--orange);margin-bottom:14px}
+  .card h3{font-family:"Archivo",sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;
+    font-size:23px;letter-spacing:-.01em;margin-bottom:14px}
+  .card p{font-size:15.5px;color:rgba(10,22,40,.75)}
+
+  /* ---------- acquire ---------- */
+  .acquire{position:relative;padding:clamp(110px,12vw,180px) 0;text-align:center;overflow:hidden}
+  .acquire .bg{position:absolute;inset:0;background:url("images/plans.jpg") center/cover no-repeat;
+    filter:saturate(.6) contrast(1.08) brightness(.5)}
+  .acquire .shade{position:absolute;inset:0;background:rgba(10,22,40,.62)}
+  .acquire .inner{position:relative;z-index:2}
+  .acquire .mono-label{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--orange);margin-bottom:24px}
+  .acquire h2{font-size:clamp(38px,5.4vw,84px);margin-bottom:20px}
+  .acquire .domline{font-family:"IBM Plex Mono",monospace;font-size:clamp(18px,2.4vw,30px);
+    letter-spacing:.08em;color:rgba(250,248,245,.9);margin-bottom:44px}
+  .acquire .price{font-family:"Archivo",sans-serif;font-stretch:125%;font-weight:900;font-size:clamp(56px,8vw,120px);
+    line-height:1;color:var(--paper);margin-bottom:44px}
+  .acquire .price small{font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:16px;
+    letter-spacing:.2em;color:rgba(250,248,245,.6);display:block;margin-top:12px}
+  .escrow{margin-top:30px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.14em;
+    color:rgba(250,248,245,.62)}
+  .escrow a{color:var(--orange);text-decoration:none;border-bottom:1px solid var(--orange)}
+  .contact-line{margin-top:18px;font-size:16px;color:rgba(250,248,245,.85)}
+  .contact-line a{color:var(--paper);font-weight:600;text-decoration:none;border-bottom:2px solid var(--orange)}
+
+  /* ---------- footer ---------- */
+  footer{background:#060d18;padding:54px 0 40px;border-top:1px solid var(--line-l)}
+  .foot{display:flex;flex-wrap:wrap;gap:16px 40px;justify-content:space-between;align-items:flex-start}
+  .foot .fbrand{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase}
+  .foot .fbrand b{color:var(--orange)}
+  .foot small{display:block;margin-top:14px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+    letter-spacing:.1em;color:rgba(250,248,245,.42);line-height:2}
+  .foot nav{display:flex;gap:26px;font-family:"IBM Plex Mono",monospace;font-size:12px;
+    letter-spacing:.2em;text-transform:uppercase}
+  .foot nav a{text-decoration:none;color:rgba(250,248,245,.65)}
+  .foot nav a:hover{color:var(--orange)}
+
+  @media(max-width:900px){
+    .thesis-grid,.cards,.stat-grid{grid-template-columns:1fr}
+    .stat-grid{border:none;background:none;gap:18px}
+    .stat{border:1px solid var(--line-l)}
+    .hero-cta .btn-buy{width:100%;text-align:center}
+  }
+</style>
+<style>
+/* --- Track A data-page supplement (Oct 2026) --- */
+.data-page{max-width:860px;margin:0 auto;padding:28px 20px 60px;overflow-wrap:break-word}
+.data-page h1{overflow-wrap:break-word;word-break:break-word}
+.data-page h2{overflow-wrap:break-word;word-break:break-word;margin-top:2.2em}
+.data-page table{width:100%;border-collapse:collapse;margin:1em 0;font-size:15px;line-height:1.5}
+.data-page th,.data-page td{text-align:left;padding:10px 8px;border-bottom:1px solid rgba(128,128,128,.35);vertical-align:top;overflow-wrap:break-word}
+.data-page .trend-up{color:#1a7a3a;font-weight:700;white-space:nowrap}
+.data-page .trend-down{color:#a33;font-weight:700;white-space:nowrap}
+.data-page .trend-base{color:#666;font-weight:700;white-space:nowrap}
+.data-page .stamp{font-size:14px;opacity:.85}
+.data-page .buybox{border:1px solid rgba(128,128,128,.5);padding:18px;margin:2em 0}
+.data-page .buybox a{font-weight:700}
+.data-page .note{font-size:14px;line-height:1.6;opacity:.92}
+.data-page a{overflow-wrap:break-word}
+@media(max-width:480px){.data-page{padding:20px 14px 48px}.data-page table,.data-page tbody,.data-page tr,.data-page td{display:block;width:100%}.data-page thead{display:none}.data-page td{border-bottom:1px solid rgba(128,128,128,.25)}.data-page td:before{content:attr(data-label)": ";font-weight:700}}
+
+/* Phase 1 assembly 2026-10-31 */
+@media (max-width:900px){h1{font-size:clamp(44px,11vw,72px)!important}}
+@media (max-width:900px){.hero .kicker{letter-spacing:.18em!important}}
+@media (max-width:900px){header.site{background:rgb(10,22,40)!important;backdrop-filter:none!important}}
+@media (max-width:900px){body{overflow-x:hidden}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Zoning and Land-Use Risk Costs",
+  "description": "Aggregated public benchmarks for zoning risk costs: regulatory share of new-home prices, rezoning timelines, and municipal fee schedules.",
+  "temporalCoverage": "2011/2026",
+  "dateModified": "2026-10-25",
+  "creator": {
+    "@type": "Organization",
+    "name": "Prime Domain Capital"
+  },
+  "sourceOrganization": [
+    "https://www.nahb.org",
+    "https://www.smcgov.org"
+  ],
+  "url": "https://zoningrisk.com/market-data",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/"
+}
+</script>
+<style>
+/* Mobile rendering fix 2026-10-31: domain H1 lines, stacked nav, header clearance */
+@media (max-width:900px){
+main h1{overflow-wrap:normal!important;word-break:normal!important}
+nav:not(.toc){flex-direction:column!important;align-items:flex-start!important;gap:4px!important;padding-top:16px!important;padding-bottom:16px!important;padding-left:20px!important;padding-right:20px!important}
+.topbar{flex-direction:column!important;align-items:flex-start!important;gap:4px!important;padding-top:16px!important;padding-bottom:16px!important;padding-left:20px!important;padding-right:20px!important}
+main h1{font-size:clamp(30px,8.5vw,58px)!important;line-height:1.15!important}
+}
+</style>
+</head>
+<body>
+<nav><div class="brand">Prime Domain Capital</div><a href="https://www.afternic.com/domain/zoningrisk.com">Buy Now — $8,888</a></nav>
+<main class="data-page">
+<p class="stamp">Last updated: October 25, 2026</p>
+<h1>What zoning risk costs, in months and dollars</h1>
+<p>Entitlement timelines, rezoning costs, and the regulatory share of a new home's price, from builder surveys and published municipal schedules.</p>
+<p>A developer's worst line item is rarely concrete. It is time: months spent waiting on a rezoning vote while carrying costs compound, and a fee schedule that only reveals its full size once studies pile up. The national survey data puts a number on the burden — more than a quarter of a new home's price now traces to regulation at some level of government — while county schedules and practitioner accounts show how unevenly that burden lands from one jurisdiction to the next.</p>
+<h2>The figures</h2>
+<table>
+<thead><tr><th>Figure</th><th>Value</th><th>Trend vs prior period</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td data-label="Figure">Government regulation cost in the price of an average new single-family home</td><td data-label="Value"><strong>$131,734, or 26.4% of the final price (2026)</strong></td><td data-label="Trend"><span class="trend-up">▲ Up</span><br><small>Prior: $93,870, or 23.8%, in 2021</small></td><td data-label="Source"><a href="https://www.nahb.org/-/media/NAHB/news-and-economics/docs/housing-economics-plus/special-studies/2026/special-study-government-regulation-in-the-price-of-a-home-june-2026-updated.pdf?rev=f3fafcb436c4440b82cfca2255998e34">National Association of Home Builders, Government Regulation in the Price of a New Home: 2026</a></td></tr>
+<tr><td data-label="Figure">Regulation cost tied to development of the lot</td><td data-label="Value"><strong>$46,795 (2026)</strong></td><td data-label="Trend"><span class="trend-up">▲ Up</span><br><small>Prior: $41,330 in 2021</small></td><td data-label="Source"><a href="https://www.nahb.org/-/media/NAHB/news-and-economics/docs/housing-economics-plus/special-studies/2026/special-study-government-regulation-in-the-price-of-a-home-june-2026-updated.pdf?rev=f3fafcb436c4440b82cfca2255998e34">National Association of Home Builders, 2026 study</a></td></tr>
+<tr><td data-label="Figure">Regulation cost tied to construction, after lot purchase</td><td data-label="Value"><strong>$84,939 (2026)</strong></td><td data-label="Trend"><span class="trend-up">▲ Up</span><br><small>Prior: $52,540 in 2021</small></td><td data-label="Source"><a href="https://eyeonhousing.org/2026/06/home-building-regulatory-cost-burdens-increased-40-from-2021-to-2026/">National Association of Home Builders, 2026 study</a></td></tr>
+<tr><td data-label="Figure">Earlier NAHB regulation-cost estimates</td><td data-label="Value"><strong>$65,224 (2011); $84,671 (2016)</strong></td><td data-label="Trend"><span class="trend-up">▲ Up</span><br><small>Prior: Series shown in full: 2011 → 2016 → 2021 → 2026, more than doubling over 15 years</small></td><td data-label="Source"><a href="https://eyeonhousing.org/2026/06/home-building-regulatory-cost-burdens-increased-40-from-2021-to-2026/">National Association of Home Builders, 2026 study</a></td></tr>
+<tr><td data-label="Figure">San Mateo County rezoning / planned unit development permit</td><td data-label="Value"><strong>About 8–10 months; fee about $24,000</strong></td><td data-label="Trend"><span class="trend-base">● Baseline</span><br><small>Prior: Published municipal schedule — no prior-period figure published on the same page</small></td><td data-label="Source"><a href="https://www.smcgov.org/planning/rezoning-planned-unit-development-permit">County of San Mateo Planning and Building Department</a></td></tr>
+<tr><td data-label="Figure">Typical rezoning, application to council vote (practitioner guide range)</td><td data-label="Value"><strong>3–8 months; commercial projects typically $25,000–$150,000+ all-in</strong></td><td data-label="Trend"><span class="trend-base">● Baseline</span><br><small>Prior: Guide range, not a survey — no prior-period equivalent</small></td><td data-label="Source"><a href="https://www.zonewire.co/blog/the-rezoning-process-what-happens-after-a-developer-files">ZoneWire rezoning process guide</a></td></tr>
+<tr><td data-label="Figure">Mid-rise apartment rezoning, Arlington County (practitioner estimate, single market)</td><td data-label="Value"><strong>About 10–18 months; about $1 million</strong></td><td data-label="Trend"><span class="trend-base">● Baseline</span><br><small>Prior: One practitioner's project experience, stated by the author as not necessarily representative — shown to illustrate contested-market costs, not as a national average</small></td><td data-label="Source"><a href="https://housinginpractice.substack.com/p/why-does-rezoning-cost-so-much">Housing in Practice (practitioner account)</a></td></tr>
+</tbody>
+</table>
+<h2>How to read these numbers</h2>
+<p>Included: the NAHB builder survey series (2011–2026), a published California county rezoning schedule, and practitioner guides that state their own limits. Excluded: individual project pro formas, paywalled entitlement databases, and any figure presented as a national average when its source covers one market only. The Arlington figure is kept precisely because its author warns against generalizing from it.</p>
+<p class="note">Disclaimer: Zoning outcomes depend on the jurisdiction, the project, and the politics of the hearing room; no average on this page predicts the result of a specific application. Figures on this page are aggregated public estimates assembled for information only. They are not investment advice, legal advice, medical advice, or a professional opinion on any specific case, claim, project, or bottle. Original reporting and the underlying surveys remain the work of the sources linked above; this page summarizes their published figures with attribution and adds no proprietary dataset.</p>
+<div class="buybox">
+<p><strong>zoningrisk.com is offered for sale at $8,888.</strong></p>
+<p><a href="https://www.afternic.com/domain/zoningrisk.com">Buy Now — $8,888 via Afternic</a></p>
+<p>Questions about this domain: <a href="mailto:info@primedomaincapital.com">info@primedomaincapital.com</a></p>
+</div>
+<h2>Changelog</h2>
+<ul><li>October 2026: Initial edition — NAHB regulation-cost series 2011–2026, San Mateo County rezoning schedule, practitioner timeline and cost ranges established.</li></ul>
+</main>
+<footer><p>Offered by <strong>Prime Domain Capital</strong> · Private holder selling its own domain assets</p><p><a href="mailto:info@primedomaincapital.com">info@primedomaincapital.com</a></p></footer>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1407571ec8bc45c3a082c91096558135"}'></script>
+<p class="back-home" style="display:block;text-align:center;padding:28px 16px;font-size:15px"><a href="https://zoningrisk.com/" style="color:inherit">&larr; Back to zoningrisk.com</a></p>
+</body>
+</html>
